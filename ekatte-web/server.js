@@ -129,6 +129,7 @@ function insertDataDB(){
         arrItems.push(item)
     });
     sqlRegions += arrItems.join(',')
+    sqlRegions += ' ON CONFLICT NO ACTION'
 
     console.log(sqlRegions)
 
