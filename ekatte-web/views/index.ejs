@@ -21,7 +21,7 @@
       <!-- header -->
       <div class="header">
         <!-- header logo -->
-        <img class="logo" src="/pics/logo.gif" alt="mg_logo" height="36" width="26">
+        <img class="logo" src="/pics/randomlogo.jpg" alt="logo" height="36" width="26">
         <!-- heading -->
         <h1 class="heading">Ekatte task telebid</h1>
         <h1 class="headingSmall">2022</h1>
@@ -33,7 +33,36 @@
           </div>
         </form>
       </div>
+
+      <div class="search_div">
+        <form  action="/" method="post">
+          <input class="search_bar" id="search" name="search" placeholder="Search for a town/village...">
+        </form>
+      </div>
+
       
+
+
+      <% if(!messages.res){ %>
+        <div class="tile2">
+          <h1 style="font-size: 15px;text-align: center;vertical-align: middle;line-height: 55px;">No results</h1>
+        </div>
+      <% }else{ %>  
+        <% messages.res.forEach((itm) =>{ %>
+          <div class="tile">
+            <h1 class="tile_type">гр./с.</h1>
+            <h1 class="tile_municip_txt">Област</h1>
+            <div class="tile_line"></div>
+            <h1 class="tile_town"><%= itm.type %> <%= itm.name %>, Общ. <%= itm.name2 %></h1>
+            <h1 class="tile_region"><%= itm.name3 %></h1>
+          </div>
+      <% })} %>
+    
+      <div style="margin-top:100px; margin-left: auto; margin-right: auto; width: 50%;">
+        <p style="padding-left:30px; font-size: 24px;">Interesting fact: In Bulgaria there are <%=stats[0]%> villages, <%=stats[1]%> towns, 
+          <%=stats[2]%> municipalities and <%=stats[3]%> regions.</p> 
+      </div>
+
       <!-- Blob -->
       <div class="blob1">
         <svg viewBox="0 0 650 650" xmlns="http://www.w3.org/2000/svg" width="100%" id="blobSvg">
@@ -46,18 +75,6 @@
           <path id="blob" d="M438.5,306.5Q385,363,338.5,427Q292,491,219,461Q146,431,104,374.5Q62,318,91,260.5Q120,203,148,162.5Q176,122,229.5,91Q283,60,345.5,88.5Q408,117,450,183.5Q492,250,438.5,306.5Z" fill="url(#gradient)"></path>
         </svg>
       </div>
-    
-      
-      <!-- Lower text -->
-        <p class="textDown">a small font</p>
-
-      <!-- Home button -->
-        <form name="btnHome" action="/" method="POST">
-          <input type="hidden" id="page" name="page" value="3">
-          <div href="javascript:;" onclick="parentNode.submit();" class="homeDown">
-            <div class="btnHome">Home</div>
-          </div>
-        </form>
       
       <!-- Blob -->
       <div class="blob2">

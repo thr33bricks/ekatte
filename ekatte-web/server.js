@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 //modules
 const insertData = require("./modules/insert_data");
+const sql = require("./modules/sql");
 
 const express = require('express')
 var http = require('http')
@@ -17,8 +18,8 @@ app.use(express.json({ limit: '30kb' }));//Limiting payload; basic DOS protectio
 
 const rateLimit = require('express-rate-limit')
 const limit = rateLimit({
-  max: 50,// max requests
-  windowMs: 60 * 1000 * 15, // 15 mins
+  max: 150,// max requests
+  windowMs: 60 * 1000 * 2, // 15 mins
   message: 'Too many requests' // message to send
 }); //Basic DOS and brute force protection
 app.use('/', limit);
@@ -30,12 +31,19 @@ app.use(xss());
 app.disable('x-powered-by')
 //===================================================================================================
 
-const flash = require('express-flash')
+const flash = require('express-flash');
+const session = require('express-session')
+const { strictEqual } = require('assert');
 
 app.set('view-engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({ extended: false }))
-//app.use(flash())
+app.use(flash())
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
 
 //Postgres connection
 const client = new Client({
@@ -51,23 +59,50 @@ client.connect(function(err) {
 
 
 app.get('/', (req, res) => {
-    res.render('index.ejs')
+    renderIndexStats(res)
 })
 
 app.post('/', (req, res) => {
-    
+    renderIndexSearch(req, res)
 })
 
-app.use(function(req, res, next) {
+app.use((res) => {
     res.status(404)
     res.redirect('/')
 })
 
 insertData.insertDataDB(client)
 
+
+
 //===================================== Functions ===================================================
 
+function renderIndexStats(res){
+    sql.getStats(client).then(stats => {
+        res.render('index.ejs', {stats})
+    }).catch(err => {
+        console.log(err)
+        console.log('There was a problem retrieving stats');
+    });
+}
 
+function renderIndexSearch(req, res){
+    let srchStr = req.body.search.trim()
+
+    if(srchStr){
+        sql.getSearchRes(client, srchStr).then(results => {
+            req.flash('res', results)
+            res.redirect('/')
+        }).catch(err => {
+            console.log(err)
+            console.log(`There was a problem while searching for ${srchStr}`);
+            res.redirect('/')
+        });
+    }
+    else{
+        res.redirect('/')
+    }
+}
 
 //===================================================================================================
 

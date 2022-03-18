@@ -16,6 +16,7 @@
     "express-ejs-layouts": "^2.5.1",
     "express-flash": "0.0.2",
     "express-rate-limit": "^6.3.0",
+    "express-session": "^1.17.2",
     "pg": "^8.7.3",
     "pg-promise": "^10.11.1",
     "xlsx": "^0.18.3",
