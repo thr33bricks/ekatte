@@ -319,22 +319,8 @@ html,body {
     .headingSmall{
         display: none;
     }
-    .picture{
-        width: 95%;
-    }
-    .textDown{
-        width: 90%;
-    }
     .footer_text{
         font-size: 12px;
-    }
-    .homeDown{
-        animation-name: move_next2;
-        bottom: 5%;
-    }
-    .btnNext{
-        animation-name: move_next2;
-        bottom: 5%;
     }
 }
 @media screen and (max-width: 768px) {
@@ -344,13 +330,5 @@ html,body {
     }
     .headingSmall{
         display: block;
-    }
-    .homeDown{
-        animation-name: move_next;
-        bottom: 20%;
-    }
-    .btnNext{
-        animation-name: move_next;
-        bottom: 20%;
     }
 }
